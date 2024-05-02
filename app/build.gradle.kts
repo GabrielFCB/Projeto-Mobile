@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -83,6 +84,7 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:gotrue-kt:1.4.7")
     implementation("io.github.jan-tennert.supabase:compose-auth:1.4.7")
     implementation("io.github.jan-tennert.supabase:compose-auth-ui:1.4.7")
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:1.4.7")
     implementation("io.ktor:ktor-client-cio:2.3.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 }

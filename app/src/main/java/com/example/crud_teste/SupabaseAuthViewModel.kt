@@ -6,12 +6,14 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.crud_teste.data.model.Note
 import com.example.crud_teste.data.model.UserState
 import com.example.crud_teste.data.network.SupabaseClient
 import com.example.crud_teste.utils.SharedPreferenceHelper
 import io.github.jan.supabase.compose.auth.composable.NativeSignInResult
 import io.github.jan.supabase.gotrue.gotrue
 import io.github.jan.supabase.gotrue.providers.builtin.Email
+import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.launch
 
 class SupabaseAuthViewModel : ViewModel(){
@@ -127,5 +129,65 @@ class SupabaseAuthViewModel : ViewModel(){
         }
     }
 
+    fun saveNote(){
+        viewModelScope.launch{
+            try{
+                _userState.value=UserState.Loading
+                SupabaseClient.client.postgrest["Mobile_teste"].insert(
+                    Note(
+                        note="This is my first note."
+                    ),
+                )
+                _userState.value=UserState.Success("Note added successfully!")
+            }catch (e: Exception){
+                _userState.value=UserState.Error("Error: ${e.message}")
+            }
+        }
+    }
+
+    fun getNote(){
+        viewModelScope.launch{
+            try{
+                _userState.value=UserState.Loading
+                val data =SupabaseClient.client.postgrest["Mobile_teste"].select()
+                    .decodeSingle<Note>()
+                _userState.value=UserState.Success("Data: ${data.note}")
+            }catch (e: Exception){
+                _userState.value=UserState.Error("Error: ${e.message}")
+            }
+        }
+    }
+
+    fun updateNote(){
+        viewModelScope.launch{
+            try{
+                _userState.value=UserState.Loading
+                SupabaseClient.client.postgrest["Mobile_teste"].update(
+                    {
+                        Note::note setTo "Note updated."
+                    }
+                ){
+                    Note::id eq 1
+                }
+                _userState.value=UserState.Success("Note updated successfully!")
+            }catch (e: Exception){
+                _userState.value=UserState.Error("Error: ${e.message}")
+            }
+        }
+    }
+
+    fun deleteNote(){
+        viewModelScope.launch{
+            try{
+                _userState.value=UserState.Loading
+                SupabaseClient.client.postgrest["Mobile_teste"].delete{
+                    Note::id eq 1
+                }
+                _userState.value=UserState.Success("Note deleted successfully!")
+            }catch (e: Exception){
+                _userState.value=UserState.Error("Error: ${e.message}")
+            }
+        }
+    }
 
 }

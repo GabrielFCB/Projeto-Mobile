@@ -4,9 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
@@ -137,6 +140,25 @@ fun MainScreen(
                 viewModel.logout(context)
             }){
             Text(text="Logout")
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Button(onClick = {viewModel.saveNote()}) {
+                Text(text = "Save")
+            }
+            Button(onClick = {viewModel.getNote()}) {
+                Text(text = "Fetch")
+            }
+            Button(onClick = {viewModel.updateNote()}) {
+                Text(text = "Update")
+            }
+            Button(onClick = {viewModel.deleteNote()}) {
+                Text(text = "Delete")
+            }
+
         }
 
         when(userState){
