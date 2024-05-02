@@ -12,6 +12,7 @@ android {
     val properties = Properties().apply { load(FileInputStream(File(rootProject.rootDir, "local.properties"))) }
     val url:String=properties.getProperty("supabaseUrl")
     val key:String=properties.getProperty("supabaseKey")
+    val googleClientId:String=properties.getProperty("googleClientId")
 
 
 
@@ -30,6 +31,7 @@ android {
 
         buildConfigField("String","supabaseUrl","\"$url\"")
         buildConfigField("String","supabaseKey","\"$key\"")
+        buildConfigField("String","googleClientId","\"$googleClientId\"")
     }
 
     buildTypes {
@@ -78,7 +80,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
-    implementation("io.github.jan-tennert.supabase:gotrue-kt:1.3.2")
+    implementation("io.github.jan-tennert.supabase:gotrue-kt:1.4.7")
+    implementation("io.github.jan-tennert.supabase:compose-auth:1.4.7")
+    implementation("io.github.jan-tennert.supabase:compose-auth-ui:1.4.7")
     implementation("io.ktor:ktor-client-cio:2.3.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 }

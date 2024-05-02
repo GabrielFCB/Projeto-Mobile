@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.crud_teste.data.model.UserState
 import com.example.crud_teste.data.network.SupabaseClient
 import com.example.crud_teste.utils.SharedPreferenceHelper
+import io.github.jan.supabase.compose.auth.composable.NativeSignInResult
 import io.github.jan.supabase.gotrue.gotrue
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import kotlinx.coroutines.launch
@@ -86,6 +87,24 @@ class SupabaseAuthViewModel : ViewModel(){
                _userState.value=UserState.Error("Error: ${e.message}")
            }
        }
+    }
+
+    fun checkGoogleLoginStatus(context:Context,result:NativeSignInResult){
+        when (result){
+            is NativeSignInResult.Success->{
+                saveToken(context)
+                _userState.value=UserState.Success("Logged in via Google")
+            }
+            is NativeSignInResult.ClosedByUser->{}
+            is NativeSignInResult.Error->{
+                val message=result.message
+                _userState.value=UserState.Error(message)
+            }
+            is NativeSignInResult.NetworkError->{
+                val message=result.message
+                _userState.value=UserState.Error(message)
+            }
+        }
     }
 
     fun isUserLoggedIn(

@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -26,7 +28,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.crud_teste.data.model.UserState
+import com.example.crud_teste.data.network.SupabaseClient
 import com.example.crud_teste.ui.theme.Crud_TesteTheme
+import io.github.jan.supabase.annotations.SupabaseExperimental
+import io.github.jan.supabase.compose.auth.composable.rememberLoginWithGoogle
+import io.github.jan.supabase.compose.auth.composeAuth
+import io.github.jan.supabase.compose.auth.ui.ProviderButtonContent
+import io.github.jan.supabase.gotrue.providers.Google
 
 
 class MainActivity : ComponentActivity() {
@@ -47,6 +55,7 @@ class MainActivity : ComponentActivity() {
 
     }
 }
+@OptIn(SupabaseExperimental::class)
 @Composable
 fun MainScreen(
     viewModel: SupabaseAuthViewModel=androidx.lifecycle.viewmodel.compose.viewModel(),
@@ -57,6 +66,11 @@ fun MainScreen(
     var userEmail by remember { mutableStateOf("") }
     var userPassword by remember{ mutableStateOf("") }
     var currentUserState by remember { mutableStateOf("") }
+
+    val action= SupabaseClient.client.composeAuth.rememberLoginWithGoogle(
+        onResult={result->viewModel.checkGoogleLoginStatus(context,result)},
+        fallback = {}
+    )
 
     LaunchedEffect(Unit){
         viewModel.isUserLoggedIn(
@@ -108,6 +122,15 @@ fun MainScreen(
         }){
             Text(text="Login")
         }
+//        Button(onClick = {
+//            action.startFlow()
+//        }) {
+//            Text(text="Login via Google")
+//        }
+        OutlinedButton(
+            onClick = { action.startFlow() },
+            content={ProviderButtonContent(provider = Google)})
+
         Button(
             colors=ButtonDefaults.buttonColors(containerColor = Color.Red),
             onClick={
