@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -114,11 +115,35 @@ fun MainScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
 fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val context = LocalContext.current
 
-    Button(onClick = {
-        viewModel.logout(context)
-        Navigator.navigateToLogin(navController)
-    }) {
-        Text("Logout")
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(onClick = { /* Add functionality when needed */ }) {
+            Text("Obras")
+        }
+        Spacer(Modifier.height(8.dp))
+        Button(onClick = { /* Add functionality when needed */ }) {
+            Text("Artista")
+        }
+        Spacer(Modifier.height(8.dp))
+        Button(onClick = { /* Add functionality when needed */ }) {
+            Text("Exposição")
+        }
+        Spacer(Modifier.height(8.dp))
+        Button(onClick = { /* Add functionality when needed */ }) {
+            Text("Administrador")
+        }
+        Spacer(Modifier.height(16.dp))
+        Button(onClick = {
+            viewModel.logout(context)
+            Navigator.navigateToLogin(navController)
+        }) {
+            Text("Logout")
+        }
     }
 }
 //@OptIn(SupabaseExperimental::class)
