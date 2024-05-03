@@ -63,15 +63,40 @@ fun DrawerContent(drawerState: DrawerState, viewModel: SupabaseAuthViewModel, co
             Icon(Icons.Filled.ArrowBack, contentDescription = "Close Drawer")
         }
         Spacer(Modifier.height(16.dp))
-        Button(onClick = { /* Adicionar funcionalidade de navegação */ }) { Text("Home") }
+        Button(onClick = {
+            coroutineScope.launch {
+                drawerState.close()
+                Navigator.navigateToHome(navController)
+            }
+        }) { Text("Home") }
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Adicionar funcionalidade de navegação */ }) { Text("Obras") }
+        Button(onClick = {
+            coroutineScope.launch {
+                drawerState.close()
+                Navigator.navigateToObras(navController)
+            }
+        }) { Text("Obras") }
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Adicionar funcionalidade de navegação */ }) { Text("Artistas") }
+        Button(onClick = {
+            coroutineScope.launch {
+                drawerState.close()
+                Navigator.navigateToArtistas(navController)
+            }
+        }) { Text("Artistas") }
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Adicionar funcionalidade de navegação */ }) { Text("Exposição") }
+        Button(onClick = {
+            coroutineScope.launch {
+                drawerState.close()
+                Navigator.navigateToExposicao(navController)
+            }
+        }) { Text("Exposição") }
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Adicionar funcionalidade de navegação */ }) { Text("Administrador") }
+        Button(onClick = {
+            coroutineScope.launch {
+                drawerState.close()
+                Navigator.navigateToAdministrador(navController)
+            }
+        }) { Text("Administrador") }
         Spacer(Modifier.height(8.dp))
         Button(onClick = {
             coroutineScope.launch {

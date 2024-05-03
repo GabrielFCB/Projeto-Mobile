@@ -6,8 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.crud_teste.telas.AdministradorScreen
+import com.example.crud_teste.telas.ArtistasScreen
+import com.example.crud_teste.telas.ExposicaoScreen
 import com.example.crud_teste.telas.HomeScreen
 import com.example.crud_teste.telas.MainScreen
+import com.example.crud_teste.telas.ObrasScreen
 import com.example.crud_teste.ui.theme.Crud_TesteTheme
 
 
@@ -20,6 +24,10 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "login") {
                     composable("login") { MainScreen(navController) }
                     composable("home") { HomeScreen(navController) }
+                    composable("obras") { ObrasScreen(navController) }
+                    composable("artistas") { ArtistasScreen(navController) }
+                    composable("exposicao") { ExposicaoScreen(navController) }
+                    composable("administrador") { AdministradorScreen(navController) }
                 }
             }
         }
