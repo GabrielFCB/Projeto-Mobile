@@ -1,5 +1,7 @@
 package com.example.crud_teste
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -130,17 +132,18 @@ fun MainScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope() // Obtem o CoroutineScope para o Composable
+    val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(drawerState)
+            DrawerContent(drawerState, viewModel, context, navController)  // Passa viewModel, context e navController para o Drawer
         }
     ) {
         Scaffold(
@@ -151,7 +154,7 @@ fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
                             text = "Centro Cultural",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color.LightGray),  // Define o fundo cinza para o título
+                                .background(Color.LightGray),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleLarge
                         )
@@ -159,85 +162,60 @@ fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
                     navigationIcon = {
                         IconButton(onClick = {
                             coroutineScope.launch {
-                                drawerState.open() // Abre o drawer dentro de uma coroutine
+                                drawerState.open()
                             }
                         }) {
                             Icon(Icons.Filled.Menu, contentDescription = "Open Navigation Menu")
                         }
                     },
                     actions = {
-                        // This space is needed to center the title when there are no actions
                         Spacer(Modifier.width(48.dp))
                     },
                     colors = TopAppBarDefaults.smallTopAppBarColors(
-                        containerColor = Color.LightGray  // Define o fundo cinza para a barra inteira
+                        containerColor = Color.LightGray
                     )
                 )
             }
-        ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Button(onClick = { /* Add functionality when needed */ }) {
-                    Text("Obras")
-                }
-                Spacer(Modifier.height(8.dp))
-                Button(onClick = { /* Add functionality when needed */ }) {
-                    Text("Artista")
-                }
-                Spacer(Modifier.height(8.dp))
-                Button(onClick = { /* Add functionality when needed */ }) {
-                    Text("Exposição")
-                }
-                Spacer(Modifier.height(8.dp))
-                Button(onClick = { /* Add functionality when needed */ }) {
-                    Text("Administrador")
-                }
-                Spacer(Modifier.height(16.dp))
-                Button(onClick = {
-                    viewModel.logout(context)
-                    Navigator.navigateToLogin(navController)
-                }) {
-                    Text("Logout")
-                }
-            }
+        ) {
         }
     }
 }
 
 @Composable
-fun DrawerContent(drawerState: DrawerState) {
-    val coroutineScope = rememberCoroutineScope()  // Utiliza o escopo de coroutine associado ao Composable
+fun DrawerContent(drawerState: DrawerState, viewModel: SupabaseAuthViewModel, context: Context, navController: NavController) {
+    val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         IconButton(
             onClick = {
                 coroutineScope.launch {
-                    drawerState.close() // Corretamente fecha o drawer
+                    drawerState.close()
                 }
             }
         ) {
             Icon(Icons.Filled.ArrowBack, contentDescription = "Close Drawer")
         }
-        Spacer(Modifier.height(16.dp)) // Espaço extra após o botão de voltar
-        Button(onClick = { /* Sem funcionalidade */ }) { Text("Home") }
+        Spacer(Modifier.height(16.dp))
+        Button(onClick = { /* Adicionar funcionalidade de navegação */ }) { Text("Home") }
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Sem funcionalidade */ }) { Text("Obras") }
+        Button(onClick = { /* Adicionar funcionalidade de navegação */ }) { Text("Obras") }
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Sem funcionalidade */ }) { Text("Artistas") }
+        Button(onClick = { /* Adicionar funcionalidade de navegação */ }) { Text("Artistas") }
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Sem funcionalidade */ }) { Text("Exposição") }
+        Button(onClick = { /* Adicionar funcionalidade de navegação */ }) { Text("Exposição") }
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Sem funcionalidade */ }) { Text("Administrador") }
+        Button(onClick = { /* Adicionar funcionalidade de navegação */ }) { Text("Administrador") }
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Sem funcionalidade */ }) { Text("Logout") }
+        Button(onClick = {
+            coroutineScope.launch {
+                viewModel.logout(context)
+                navController.navigate("login")
+                drawerState.close()
+            }
+        }) { Text("Logout") }
     }
 }
+
 
 //@OptIn(SupabaseExperimental::class)
 //@Composable
