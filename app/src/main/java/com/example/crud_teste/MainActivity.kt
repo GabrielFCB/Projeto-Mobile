@@ -18,10 +18,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -29,11 +31,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +58,7 @@ import io.github.jan.supabase.compose.auth.composable.rememberLoginWithGoogle
 import io.github.jan.supabase.compose.auth.composeAuth
 import io.github.jan.supabase.compose.auth.ui.ProviderButtonContent
 import io.github.jan.supabase.gotrue.providers.Google
+import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
@@ -125,66 +130,97 @@ fun MainScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
 @Composable
 fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val context = LocalContext.current
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope() // Obtem o CoroutineScope para o Composable
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Centro Cultural",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.LightGray),  // Define o fundo cinza para o título
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            DrawerContent()
+        }
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "Centro Cultural",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.LightGray),  // Define o fundo cinza para o título
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            coroutineScope.launch {
+                                drawerState.open() // Abre o drawer dentro de uma coroutine
+                            }
+                        }) {
+                            Icon(Icons.Filled.Menu, contentDescription = "Open Navigation Menu")
+                        }
+                    },
+                    actions = {
+                        // This space is needed to center the title when there are no actions
+                        Spacer(Modifier.width(48.dp))
+                    },
+                    colors = TopAppBarDefaults.smallTopAppBarColors(
+                        containerColor = Color.LightGray  // Define o fundo cinza para a barra inteira
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /* Handle drawer open here */ }) {
-                        Icon(Icons.Filled.Menu, contentDescription = "Open Navigation Menu")
-                    }
-                },
-                actions = {
-                    // This space is needed to center the title when there are no actions
-                    Spacer(Modifier.width(48.dp))
-                },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = Color.LightGray  // Define o fundo cinza para a barra inteira
                 )
-            )
+            }
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = { /* Add functionality when needed */ }) {
+                    Text("Obras")
+                }
+                Spacer(Modifier.height(8.dp))
+                Button(onClick = { /* Add functionality when needed */ }) {
+                    Text("Artista")
+                }
+                Spacer(Modifier.height(8.dp))
+                Button(onClick = { /* Add functionality when needed */ }) {
+                    Text("Exposição")
+                }
+                Spacer(Modifier.height(8.dp))
+                Button(onClick = { /* Add functionality when needed */ }) {
+                    Text("Administrador")
+                }
+                Spacer(Modifier.height(16.dp))
+                Button(onClick = {
+                    viewModel.logout(context)
+                    Navigator.navigateToLogin(navController)
+                }) {
+                    Text("Logout")
+                }
+            }
         }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(onClick = { /* Add functionality when needed */ }) {
-                Text("Obras")
-            }
-            Spacer(Modifier.height(8.dp))
-            Button(onClick = { /* Add functionality when needed */ }) {
-                Text("Artista")
-            }
-            Spacer(Modifier.height(8.dp))
-            Button(onClick = { /* Add functionality when needed */ }) {
-                Text("Exposição")
-            }
-            Spacer(Modifier.height(8.dp))
-            Button(onClick = { /* Add functionality when needed */ }) {
-                Text("Administrador")
-            }
-            Spacer(Modifier.height(16.dp))
-            Button(onClick = {
-                viewModel.logout(context)
-                Navigator.navigateToLogin(navController)
-            }) {
-                Text("Logout")
-            }
-        }
+    }
+}
+
+@Composable
+fun DrawerContent() {
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Button(onClick = { /* Sem funcionalidade */ }) { Text("Home") }
+        Spacer(Modifier.height(8.dp))
+        Button(onClick = { /* Sem funcionalidade */ }) { Text("Obras") }
+        Spacer(Modifier.height(8.dp))
+        Button(onClick = { /* Sem funcionalidade */ }) { Text("Artistas") }
+        Spacer(Modifier.height(8.dp))
+        Button(onClick = { /* Sem funcionalidade */ }) { Text("Exposições") }
+        Spacer(Modifier.height(8.dp))
+        Button(onClick = { /* Sem funcionalidade */ }) { Text("Administrador") }
+        Button(onClick = { /* Sem funcionalidade */ }) { Text("Logout") }
+        Spacer(Modifier.height(8.dp))
+
     }
 }
 //@OptIn(SupabaseExperimental::class)
