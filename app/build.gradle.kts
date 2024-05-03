@@ -87,4 +87,6 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:postgrest-kt:1.4.7")
     implementation("io.ktor:ktor-client-cio:2.3.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
+    implementation ("androidx.navigation:navigation-compose:2.4.0")
 }
