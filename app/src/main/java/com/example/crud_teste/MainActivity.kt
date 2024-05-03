@@ -15,9 +15,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -58,6 +60,8 @@ import io.github.jan.supabase.compose.auth.composable.rememberLoginWithGoogle
 import io.github.jan.supabase.compose.auth.composeAuth
 import io.github.jan.supabase.compose.auth.ui.ProviderButtonContent
 import io.github.jan.supabase.gotrue.providers.Google
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -136,7 +140,7 @@ fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent()
+            DrawerContent(drawerState)
         }
     ) {
         Scaffold(
@@ -207,22 +211,34 @@ fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
 }
 
 @Composable
-fun DrawerContent() {
+fun DrawerContent(drawerState: DrawerState) {
+    val coroutineScope = rememberCoroutineScope()  // Utiliza o escopo de coroutine associado ao Composable
+
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        IconButton(
+            onClick = {
+                coroutineScope.launch {
+                    drawerState.close() // Corretamente fecha o drawer
+                }
+            }
+        ) {
+            Icon(Icons.Filled.ArrowBack, contentDescription = "Close Drawer")
+        }
+        Spacer(Modifier.height(16.dp)) // Espaço extra após o botão de voltar
         Button(onClick = { /* Sem funcionalidade */ }) { Text("Home") }
         Spacer(Modifier.height(8.dp))
         Button(onClick = { /* Sem funcionalidade */ }) { Text("Obras") }
         Spacer(Modifier.height(8.dp))
         Button(onClick = { /* Sem funcionalidade */ }) { Text("Artistas") }
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Sem funcionalidade */ }) { Text("Exposições") }
+        Button(onClick = { /* Sem funcionalidade */ }) { Text("Exposição") }
         Spacer(Modifier.height(8.dp))
         Button(onClick = { /* Sem funcionalidade */ }) { Text("Administrador") }
-        Button(onClick = { /* Sem funcionalidade */ }) { Text("Logout") }
         Spacer(Modifier.height(8.dp))
-
+        Button(onClick = { /* Sem funcionalidade */ }) { Text("Logout") }
     }
 }
+
 //@OptIn(SupabaseExperimental::class)
 //@Composable
 //fun MainScreen(
