@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -132,13 +134,15 @@ fun MainScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
     }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
+
+    // Dados placeholder para simular a lista
+    val itemsList = List(5) { "Item ${it + 1}" }  // Isto pode ser substituído por uma chamada de API ou dados vindos de um banco de dados
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -176,8 +180,34 @@ fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
                     )
                 )
             }
-        ) {
+        ) { paddingValues ->
+            Column(modifier = Modifier.padding(paddingValues)) {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(itemsList.size) { index ->
+                        ListItem(item = itemsList[index])
+                    }
+                }
+            }
         }
+    }
+}
+
+@Composable
+fun ListItem(item: String) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)) {
+        Box(
+            modifier = Modifier
+                .height(200.dp)
+                .fillMaxWidth()
+                .background(Color.LightGray),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "Placeholder Image", style = MaterialTheme.typography.headlineMedium)
+        }
+        Spacer(Modifier.height(8.dp))
+        Text(text = item, style = MaterialTheme.typography.bodyMedium)
     }
 }
 
