@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,14 +13,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -111,38 +121,69 @@ fun MainScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val context = LocalContext.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(onClick = { /* Add functionality when needed */ }) {
-            Text("Obras")
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Centro Cultural",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray),  // Define o fundo cinza para o título
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { /* Handle drawer open here */ }) {
+                        Icon(Icons.Filled.Menu, contentDescription = "Open Navigation Menu")
+                    }
+                },
+                actions = {
+                    // This space is needed to center the title when there are no actions
+                    Spacer(Modifier.width(48.dp))
+                },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = Color.LightGray  // Define o fundo cinza para a barra inteira
+                )
+            )
         }
-        Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Add functionality when needed */ }) {
-            Text("Artista")
-        }
-        Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Add functionality when needed */ }) {
-            Text("Exposição")
-        }
-        Spacer(Modifier.height(8.dp))
-        Button(onClick = { /* Add functionality when needed */ }) {
-            Text("Administrador")
-        }
-        Spacer(Modifier.height(16.dp))
-        Button(onClick = {
-            viewModel.logout(context)
-            Navigator.navigateToLogin(navController)
-        }) {
-            Text("Logout")
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(onClick = { /* Add functionality when needed */ }) {
+                Text("Obras")
+            }
+            Spacer(Modifier.height(8.dp))
+            Button(onClick = { /* Add functionality when needed */ }) {
+                Text("Artista")
+            }
+            Spacer(Modifier.height(8.dp))
+            Button(onClick = { /* Add functionality when needed */ }) {
+                Text("Exposição")
+            }
+            Spacer(Modifier.height(8.dp))
+            Button(onClick = { /* Add functionality when needed */ }) {
+                Text("Administrador")
+            }
+            Spacer(Modifier.height(16.dp))
+            Button(onClick = {
+                viewModel.logout(context)
+                Navigator.navigateToLogin(navController)
+            }) {
+                Text("Logout")
+            }
         }
     }
 }
