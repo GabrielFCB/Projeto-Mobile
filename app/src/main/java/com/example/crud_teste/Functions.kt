@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 
+
+//Refere-se às imagens com descrição e placeholder, usada na home screen
 @Composable
 fun ListItem(item: String) {
     Column(modifier = Modifier
@@ -45,6 +47,7 @@ fun ListItem(item: String) {
     }
 }
 
+//Refere-se aos itens da sidebar
 @Composable
 fun DrawerContent(drawerState: DrawerState, viewModel: SupabaseAuthViewModel, context: Context, navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
