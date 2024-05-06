@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.crud_teste.data.model.Artista
 import com.example.crud_teste.data.model.Note
 import com.example.crud_teste.data.model.UserState
 import com.example.crud_teste.data.network.SupabaseClient
@@ -141,6 +142,23 @@ class SupabaseAuthViewModel : ViewModel(){
                 _userState.value=UserState.Success("Note added successfully!")
             }catch (e: Exception){
                 _userState.value=UserState.Error("Error: ${e.message}")
+            }
+        }
+    }
+
+    fun saveArtista(artista: Artista) {
+        viewModelScope.launch {
+            try {
+                _userState.value=UserState.Loading
+                SupabaseClient.client.postgrest["Artistas"].insert(
+                    Artista(
+                        Nome = artista.Nome,
+                        Data = artista.Data,
+                        Biografia = artista.Biografia
+                    ),
+                )
+            } catch (e: Exception) {
+                _userState.value = UserState.Error("Error: ${e.message}")
             }
         }
     }
