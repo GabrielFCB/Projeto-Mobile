@@ -28,4 +28,8 @@ object Navigator {
             popUpTo("home") { inclusive = true }
         }
     }
+
+    fun navigateToCadastrarArtista(navController: NavController) {
+        navController.navigate("cadastrarArtista")
+    }
 }

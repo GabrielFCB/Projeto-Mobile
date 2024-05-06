@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.crud_teste.telas.AdministradorScreen
 import com.example.crud_teste.telas.ArtistasScreen
+import com.example.crud_teste.telas.CadastrarArtistaScreen
 import com.example.crud_teste.telas.ExposicaoScreen
 import com.example.crud_teste.telas.HomeScreen
 import com.example.crud_teste.telas.MainScreen
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
                     composable("artistas") { ArtistasScreen(navController) }
                     composable("exposicao") { ExposicaoScreen(navController) }
                     composable("administrador") { AdministradorScreen(navController) }
+                    composable("cadastrarArtista") { CadastrarArtistaScreen(navController) }
                 }
             }
         }
