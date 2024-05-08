@@ -32,4 +32,24 @@ object Navigator {
     fun navigateToCadastrarArtista(navController: NavController) {
         navController.navigate("cadastrarArtista")
     }
+
+    fun navigateToAcessibilidade(navController: NavController) {
+        navController.navigate("acessibilidade")
+    }
+
+    fun navigateToAtualizarArtista(navController: NavController) {
+        navController.navigate("atualizarArtista")
+    }
+
+    fun navigateToAtualizarObra(navController: NavController) {
+        navController.navigate("atualizarObra")
+    }
+
+    fun navigateToVisualizarArtista(navController: NavController) {
+        navController.navigate("visualizarArtista")
+    }
+
+    fun navigateToVisualizarObra(navController: NavController) {
+        navController.navigate("visualizarObra")
+    }
 }

@@ -1,19 +1,17 @@
 package com.example.crud_teste.telas
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,9 +24,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -36,16 +38,30 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.crud_teste.DrawerContent
 import com.example.crud_teste.ListItem
-import com.example.crud_teste.Navigator
 import com.example.crud_teste.SupabaseAuthViewModel
+import com.example.crud_teste.data.model.Artista
+import com.example.crud_teste.data.model.UserState
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdministradorScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun VisualizarArtistaScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
+    val coroutineScope = rememberCoroutineScope()
+
+    // Chamada apropriada para obter artistas quando a tela é acessada
+    LaunchedEffect(Unit) {
+        try {
+            viewModel.getArtistas()
+        } catch (e: Exception) {
+            // Trate o erro conforme necessário
+            // Aqui você pode definir um estado de erro ou lidar com o erro de outra forma
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -58,7 +74,7 @@ fun AdministradorScreen(navController: NavController, viewModel: SupabaseAuthVie
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Administrador",
+                            text = "Artistas",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.LightGray),
@@ -84,60 +100,30 @@ fun AdministradorScreen(navController: NavController, viewModel: SupabaseAuthVie
                 )
             }
         ) { paddingValues ->
-            Column(modifier = Modifier.padding(paddingValues)) {
-                Button(
-                    onClick = { Navigator.navigateToCadastrarArtista(navController) },
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.primary),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text("Cadastrar Artista", color = Color.White)
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(
-                    onClick = { Navigator.navigateToAtualizarArtista(navController) },
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.primary),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text("Atualizar Artista", color = Color.White)
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.primary),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text("Cadastrar Obra", color = Color.White)
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(
-                    onClick = { Navigator.navigateToAtualizarObra(navController) },
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.primary),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text("Atualizar Obra", color = Color.White)
+            val artistasState = viewModel.artistaState.value
+            // Verifica se a lista de artistas não está vazia antes de exibi-la
+
+            LazyColumn(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+            ) {
+                items(artistasState.size) { index ->
+                    val artista = artistasState[index]
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp, horizontal = 8.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "Nome: ${artista.Nome}")
+                        Text(text = "Data: ${artista.Data}")
+                        Text(text = "Biografia: ${artista.Biografia}")
+                    }
                 }
             }
+
+
         }
     }
 }
-

@@ -6,13 +6,18 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.crud_teste.telas.AcessibilidadeScreen
 import com.example.crud_teste.telas.AdministradorScreen
 import com.example.crud_teste.telas.ArtistasScreen
+import com.example.crud_teste.telas.AtualizarArtistaScreen
+import com.example.crud_teste.telas.AtualizarObraScreen
 import com.example.crud_teste.telas.CadastrarArtistaScreen
 import com.example.crud_teste.telas.ExposicaoScreen
 import com.example.crud_teste.telas.HomeScreen
 import com.example.crud_teste.telas.MainScreen
 import com.example.crud_teste.telas.ObrasScreen
+import com.example.crud_teste.telas.VisualizarArtistaScreen
+import com.example.crud_teste.telas.VisualizarObraScreen
 import com.example.crud_teste.ui.theme.Crud_TesteTheme
 
 
@@ -30,6 +35,11 @@ class MainActivity : ComponentActivity() {
                     composable("exposicao") { ExposicaoScreen(navController) }
                     composable("administrador") { AdministradorScreen(navController) }
                     composable("cadastrarArtista") { CadastrarArtistaScreen(navController) }
+                    composable("acessibilidade") { AcessibilidadeScreen(navController) }
+                    composable("atualizarArtista") { AtualizarArtistaScreen(navController) }
+                    composable("atualizarObra") { AtualizarObraScreen(navController) }
+                    composable("visualizarArtista") { VisualizarArtistaScreen(navController) }
+                    composable("visualizarObra") { VisualizarObraScreen(navController) }
                 }
             }
         }

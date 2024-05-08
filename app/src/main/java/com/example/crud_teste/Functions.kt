@@ -98,6 +98,12 @@ fun DrawerContent(drawerState: DrawerState, viewModel: SupabaseAuthViewModel, co
                 Navigator.navigateToAdministrador(navController)
             }
         }) { Text("Administrador") }
+        Button(onClick = {
+            coroutineScope.launch {
+                drawerState.close()
+                Navigator.navigateToAcessibilidade(navController)
+            }
+        }) { Text("Acessibilidade") }
         Spacer(Modifier.height(8.dp))
         Button(onClick = {
             coroutineScope.launch {
