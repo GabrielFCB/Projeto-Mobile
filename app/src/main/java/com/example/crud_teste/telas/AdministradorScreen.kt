@@ -47,62 +47,69 @@ fun AdministradorScreen(navController: NavController, viewModel: SupabaseAuthVie
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Administrador",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.LightGray),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            drawerState.open()
-                        }
-                    }) {
-                        Icon(Icons.Filled.Menu, contentDescription = "Open Navigation Menu")
-                    }
-                },
-                actions = {
-                    Spacer(Modifier.width(48.dp))
-                },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = Color.LightGray
-                )
-            )
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            DrawerContent(drawerState, viewModel, context, navController)
         }
-    ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            Button(
-                onClick = { Navigator.navigateToCadastrarArtista(navController) },
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.primary),
-                contentPadding = PaddingValues(0.dp)
-            ) {
-                Text("Cadastrar Artista", color = Color.White)
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "Administrador",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.LightGray),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            coroutineScope.launch {
+                                drawerState.open()
+                            }
+                        }) {
+                            Icon(Icons.Filled.Menu, contentDescription = "Open Navigation Menu")
+                        }
+                    },
+                    actions = {
+                        Spacer(Modifier.width(48.dp))
+                    },
+                    colors = TopAppBarDefaults.smallTopAppBarColors(
+                        containerColor = Color.LightGray
+                    )
+                )
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.primary),
-                contentPadding = PaddingValues(0.dp)
-            ) {
-                Text("Cadastrar Obra", color = Color.White)
+        ) { paddingValues ->
+            Column(modifier = Modifier.padding(paddingValues)) {
+                Button(
+                    onClick = { Navigator.navigateToCadastrarArtista(navController) },
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.primary),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text("Cadastrar Artista", color = Color.White)
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.primary),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text("Cadastrar Obra", color = Color.White)
+                }
             }
         }
     }
