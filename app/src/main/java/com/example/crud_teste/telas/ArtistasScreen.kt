@@ -1,7 +1,9 @@
 package com.example.crud_teste.telas
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +24,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -32,22 +39,34 @@ import androidx.navigation.NavController
 import com.example.crud_teste.DrawerContent
 import com.example.crud_teste.ListItem
 import com.example.crud_teste.SupabaseAuthViewModel
+import com.example.crud_teste.data.model.Artista
+import com.example.crud_teste.data.model.UserState
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArtistasScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
+    val coroutineScope = rememberCoroutineScope()
 
-    // Dados placeholder para simular a lista
-    val itemsList = List(5) { "Item ${it + 1}" }  // Isto pode ser substituído por uma chamada de API ou dados vindos de um banco de dados
+    // Chamada apropriada para obter artistas quando a tela é acessada
+    LaunchedEffect(Unit) {
+        try {
+            viewModel.getArtistas()
+        } catch (e: Exception) {
+            // Trate o erro conforme necessário
+            // Aqui você pode definir um estado de erro ou lidar com o erro de outra forma
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(drawerState, viewModel, context, navController)  // Passa viewModel, context e navController para o Drawer
+            DrawerContent(drawerState, viewModel, context, navController)
         }
     ) {
         Scaffold(
@@ -81,13 +100,30 @@ fun ArtistasScreen(navController: NavController, viewModel: SupabaseAuthViewMode
                 )
             }
         ) { paddingValues ->
-            Column(modifier = Modifier.padding(paddingValues)) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(itemsList.size) { index ->
-                        ListItem(item = itemsList[index])
+            val artistasState = viewModel.artistaState.value
+            // Verifica se a lista de artistas não está vazia antes de exibi-la
+
+            LazyColumn(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+            ) {
+                items(artistasState.size) { index ->
+                    val artista = artistasState[index]
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp, horizontal = 8.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "Nome: ${artista.Nome}")
+                        Text(text = "Data: ${artista.Data}")
+                        Text(text = "Biografia: ${artista.Biografia}")
                     }
                 }
             }
+
+
         }
     }
 }

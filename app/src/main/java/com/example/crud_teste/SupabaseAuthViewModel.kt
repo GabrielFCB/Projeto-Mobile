@@ -16,10 +16,16 @@ import io.github.jan.supabase.gotrue.gotrue
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.jsonArray
 
 class SupabaseAuthViewModel : ViewModel(){
     private val _userState=mutableStateOf<UserState>(UserState.Loading)
     val userState:State<UserState>
+
+    private val _artistaState = mutableStateOf<List<Artista>>(emptyList())
+    val artistaState: State<List<Artista>> = _artistaState
 
     init{
         userState=_userState
@@ -162,6 +168,28 @@ class SupabaseAuthViewModel : ViewModel(){
             }
         }
     }
+
+    fun getArtistas() {
+        viewModelScope.launch {
+            try {
+                _userState.value = UserState.Loading
+                val response = SupabaseClient.client.postgrest["Artistas"].select()
+
+                val artistasJsonArray = response.body?.jsonArray
+                val artistas = mutableListOf<Artista>()
+                artistasJsonArray?.forEach { jsonElement ->
+                    val artista = Json.decodeFromJsonElement<Artista>(jsonElement)
+                    artistas.add(artista)
+                }
+                _artistaState.value = artistas // Atualizando artistaState com a lista de artistas
+                _userState.value = UserState.Success("Artistas carregados com sucesso!")
+            } catch (e: Exception) {
+                _userState.value = UserState.Error("Erro: ${e.message}")
+            }
+        }
+    }
+
+
 
     fun getNote(){
         viewModelScope.launch{

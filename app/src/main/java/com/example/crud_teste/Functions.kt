@@ -81,6 +81,7 @@ fun DrawerContent(drawerState: DrawerState, viewModel: SupabaseAuthViewModel, co
             coroutineScope.launch {
                 drawerState.close()
                 Navigator.navigateToArtistas(navController)
+                viewModel.getArtistas()
             }
         }) { Text("Artistas") }
         Spacer(Modifier.height(8.dp))
