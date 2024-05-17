@@ -1,4 +1,4 @@
-package com.example.crud_teste
+package com.example.crud_teste.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -29,7 +29,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.crud_teste.components.ArtistaList
+import com.example.crud_teste.components.GenericListView
 import com.example.crud_teste.components.SideBar
+import com.example.crud_teste.data.model.Artista
+import com.example.crud_teste.interfaces.ICrudService
+import com.example.crud_teste.services.ArtistaCrudService
 import kotlinx.coroutines.launch
 
 
@@ -39,10 +44,15 @@ fun ArtistasScreen(navController: NavController) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
+    val artistaCrudService = ArtistaCrudService()
+    var artistas : List<Artista> = listOf<Artista>()
 
     // Chamada apropriada para obter artistas quando a tela é acessada
     LaunchedEffect(Unit) {
         try {
+            coroutineScope.launch {
+                artistas = artistaCrudService.getAll();
+            }
             //viewModel.getArtistas()
         } catch (e: Exception) {
             // Trate o erro conforme necessário
@@ -95,21 +105,9 @@ fun ArtistasScreen(navController: NavController) {
                     .padding(paddingValues)
                     .fillMaxSize()
             ) {
-//                items(artistasState.size) { index ->
-//                    val artista = artistasState[index]
-//                    Column(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(vertical = 4.dp, horizontal = 8.dp),
-//                        horizontalAlignment = Alignment.Start
-//                    ) {
-//                        Text(text = "Nome: ${artista.Nome}")
-//                        Text(text = "Data: ${artista.Data}")
-//                        Text(text = "Biografia: ${artista.Biografia}")
-//                    }
-//                }
-            }
 
+            }
+            ArtistaList(artistas= artistas)
 
         }
     }

@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     composable("login") { MainScreen(navController) }
                     composable("home") { HomeScreen(navController) }
                     composable("obras") { ObrasScreen(navController) }
-                    composable("artistas") { ArtistasScreen(navController) }
+                    composable("artistas") { ArtistasScreen(navController, ) }
                     composable("exposicao") { ExposicaoScreen(navController) }
                     composable("administrador") { AdministradorScreen(navController) }
                     composable("cadastrarArtista") { CadastrarArtistaScreen(navController) }

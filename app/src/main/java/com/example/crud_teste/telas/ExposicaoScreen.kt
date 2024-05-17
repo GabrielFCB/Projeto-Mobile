@@ -30,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.crud_teste.components.SideBar
-import com.example.crud_teste.components.ListItem
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,7 +82,6 @@ fun ExposicaoScreen(navController: NavController) {
             Column(modifier = Modifier.padding(paddingValues)) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(itemsList.size) { index ->
-                        ListItem(item = itemsList[index])
                     }
                 }
             }

@@ -60,16 +60,16 @@ class ArtistaCrudService: ICrudService<Artista> {
 
     override suspend fun getAll(): List<Artista>{
         val artistas = mutableListOf<Artista>()
-            try {
-                val response = SupabaseClient.client.postgrest["Artistas"].select()
-                val artistasJsonArray = response.body?.jsonArray
-                artistasJsonArray?.forEach { jsonElement ->
-                    val artista = Json.decodeFromJsonElement<Artista>(jsonElement)
-                    artistas.add(artista)
-                }
-            } catch (e: Exception) {
-
+        try {
+            val response = SupabaseClient.client.postgrest["Artistas"].select()
+            val artistasJsonArray = response.body?.jsonArray
+            artistasJsonArray?.forEach { jsonElement ->
+                val artista = Json.decodeFromJsonElement<Artista>(jsonElement)
+                artistas.add(artista)
             }
+        } catch (e: Exception) {
+            println(e.message)
+        }
         return artistas
     }
 
