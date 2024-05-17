@@ -30,8 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.crud_teste.DrawerContent
-import com.example.crud_teste.services.AuthService
+import com.example.crud_teste.components.SideBar
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +44,7 @@ fun AcessibilidadeScreen(navController: NavController) {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(drawerState, context, navController)  // Passa viewModel, context e navController para o Drawer
+            SideBar(drawerState, context, navController)  // Passa viewModel, context e navController para o Drawer
         }
     ) {
         Scaffold(

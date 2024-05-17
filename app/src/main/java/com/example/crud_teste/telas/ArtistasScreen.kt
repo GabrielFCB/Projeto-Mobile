@@ -1,7 +1,6 @@
 package com.example.crud_teste.telas
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,11 +29,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.crud_teste.DrawerContent
-import com.example.crud_teste.services.AuthService
+import com.example.crud_teste.components.SideBar
 import kotlinx.coroutines.launch
-import androidx.compose.ui.Alignment
-import com.example.crud_teste.services.ArtistaCrudService
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +53,7 @@ fun ArtistasScreen(navController: NavController) {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(drawerState, context, navController)
+            SideBar(drawerState, context, navController)
         }
     ) {
         Scaffold(
