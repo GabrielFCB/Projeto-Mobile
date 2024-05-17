@@ -16,7 +16,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,13 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.crud_teste.SupabaseAuthViewModel
+import com.example.crud_teste.services.AuthService
 import com.example.crud_teste.data.model.Artista
-import io.ktor.websocket.Frame
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AtualizarArtistaScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun AtualizarArtistaScreen(navController: NavController) {
     var Nome by remember { mutableStateOf("") }
     var Data by remember { mutableStateOf("") }
     var Biografia by remember { mutableStateOf("") }
@@ -87,7 +85,7 @@ fun AtualizarArtistaScreen(navController: NavController, viewModel: SupabaseAuth
                         Data= Data,
                         Biografia = Biografia
                     )
-                    viewModel.saveArtista(novoArtista)
+                    //viewModel.saveArtista(novoArtista)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

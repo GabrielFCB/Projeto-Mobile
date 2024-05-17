@@ -31,12 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.crud_teste.DrawerContent
 import com.example.crud_teste.ListItem
-import com.example.crud_teste.SupabaseAuthViewModel
+import com.example.crud_teste.services.AuthService
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
@@ -47,7 +47,7 @@ fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(drawerState, viewModel, context, navController)  // Passa viewModel, context e navController para o Drawer
+            DrawerContent(drawerState, context, navController)  // Passa viewModel, context e navController para o Drawer
         }
     ) {
         Scaffold(

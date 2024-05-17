@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.crud_teste.services.AuthService
 import kotlinx.coroutines.launch
 
 
@@ -49,7 +50,7 @@ fun ListItem(item: String) {
 
 //Refere-se aos itens da sidebar
 @Composable
-fun DrawerContent(drawerState: DrawerState, viewModel: SupabaseAuthViewModel, context: Context, navController: NavController) {
+fun DrawerContent(drawerState: DrawerState, context: Context, navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -81,7 +82,6 @@ fun DrawerContent(drawerState: DrawerState, viewModel: SupabaseAuthViewModel, co
             coroutineScope.launch {
                 drawerState.close()
                 Navigator.navigateToArtistas(navController)
-                viewModel.getArtistas()
             }
         }) { Text("Artistas") }
         Spacer(Modifier.height(8.dp))
@@ -107,7 +107,7 @@ fun DrawerContent(drawerState: DrawerState, viewModel: SupabaseAuthViewModel, co
         Spacer(Modifier.height(8.dp))
         Button(onClick = {
             coroutineScope.launch {
-                viewModel.logout(context)
+                //viewModel.logout(context)
                 navController.navigate("login")
                 drawerState.close()
             }
