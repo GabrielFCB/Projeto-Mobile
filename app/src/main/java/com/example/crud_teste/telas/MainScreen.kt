@@ -29,7 +29,7 @@ import io.github.jan.supabase.compose.auth.composeAuth
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navController: NavController,authService: AuthService) {
     val context = LocalContext.current
     //
 
@@ -68,8 +68,7 @@ fun MainScreen(navController: NavController) {
 //            Text("Sign Up")
 //        }
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { coroutineScope.launch {
-            //viewModel.logout(context)
+        Button(onClick = { coroutineScope.launch { if (authService.login(context, userEmail, userPassword))
             navController.navigate("home")
         }}) {
             Text("Login")

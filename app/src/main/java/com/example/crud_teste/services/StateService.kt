@@ -11,4 +11,16 @@ class StateService {
         userState=_userState
     }
 
+    fun setLoading() {
+        _userState.value = UserState.Loading
+    }
+
+    fun setSuccess(message: String) {
+        _userState.value = UserState.Success(message)
+    }
+
+    fun setError(message: String) {
+        _userState.value = UserState.Error(message)
+    }
+
 }

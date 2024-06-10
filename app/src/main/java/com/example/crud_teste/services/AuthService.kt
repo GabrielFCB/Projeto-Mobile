@@ -11,7 +11,7 @@ import io.github.jan.supabase.compose.auth.composable.NativeSignInResult
 import io.github.jan.supabase.gotrue.gotrue
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 
-class AuthService : IAuthService{
+class AuthService(private val stateService: StateService) : IAuthService{
 
      override suspend fun signUp(
         context: Context,
@@ -48,7 +48,7 @@ class AuthService : IAuthService{
         userPassword: String,
     ) : Boolean{
         var status:Boolean=false
-            ///_userState.value=UserState.Loading
+        stateService.setLoading()
         try {
                 SupabaseClient.client.gotrue.loginWith(Email){
                     email=userEmail
@@ -56,9 +56,9 @@ class AuthService : IAuthService{
                 }
                 saveToken(context)
                 status=true
-                //_userState.value=UserState.Success("Logged in successfully")
+            stateService.setSuccess("Logged in successfully")
             } catch (e:Exception){
-                //_userState.value=UserState.Error("Error: ${e.message}")
+            stateService.setError("Error: ${e.message}")
             }
         return status
     }
