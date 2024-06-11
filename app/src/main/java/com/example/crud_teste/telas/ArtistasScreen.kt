@@ -1,6 +1,7 @@
 package com.example.crud_teste.telas
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -40,11 +42,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArtistasScreen(navController: NavController) {
+fun ArtistasScreen(navController: NavController, artistaCrudService: ArtistaCrudService) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
-    val artistaCrudService = ArtistaCrudService()
     var artistas : List<Artista> = listOf<Artista>()
 
     // Chamada apropriada para obter artistas quando a tela é acessada
@@ -97,7 +98,7 @@ fun ArtistasScreen(navController: NavController) {
                 )
             }
         ) { paddingValues ->
-//            val artistasState = viewModel.artistaState.value
+           val artistasState = artistaCrudService.artistaState.value
             // Verifica se a lista de artistas não está vazia antes de exibi-la
 
             LazyColumn(
@@ -105,9 +106,20 @@ fun ArtistasScreen(navController: NavController) {
                     .padding(paddingValues)
                     .fillMaxSize()
             ) {
-
+                items(artistasState.size) { index ->
+                    val artista = artistasState[index]
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp, horizontal = 8.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "Nome: ${artista.Nome}")
+                        Text(text = "Data: ${artista.Data}")
+                        Text(text = "Biografia: ${artista.Biografia}")
+                    }
+                }
             }
-            ArtistaList(artistas= artistas)
 
         }
     }

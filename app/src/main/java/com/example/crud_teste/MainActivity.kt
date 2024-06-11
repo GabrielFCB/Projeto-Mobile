@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.crud_teste.services.ArtistaCrudService
 import com.example.crud_teste.services.AuthService
 import com.example.crud_teste.services.StateService
 import com.example.crud_teste.telas.AcessibilidadeScreen
@@ -31,11 +32,13 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val stateService: StateService=StateService()
                 val authService:AuthService=AuthService(stateService);
+                val artistaCrudService:ArtistaCrudService= ArtistaCrudService(stateService);
+
                 NavHost(navController = navController, startDestination = "login") {
                     composable("login") { MainScreen(navController,authService) }
                     composable("home") { HomeScreen(navController) }
                     composable("obras") { ObrasScreen(navController) }
-                    composable("artistas") { ArtistasScreen(navController, ) }
+                    composable("artistas") { ArtistasScreen(navController,artistaCrudService ) }
                     composable("exposicao") { ExposicaoScreen(navController) }
                     composable("administrador") { AdministradorScreen(navController) }
                     composable("cadastrarArtista") { CadastrarArtistaScreen(navController) }

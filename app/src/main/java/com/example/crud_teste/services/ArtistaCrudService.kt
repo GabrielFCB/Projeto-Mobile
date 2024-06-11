@@ -15,7 +15,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonArray
 
-class ArtistaCrudService: ICrudService<Artista> {
+class ArtistaCrudService(private val stateService: StateService): ICrudService<Artista> {
     private val _userState= mutableStateOf<UserState>(UserState.Loading)
     val userState: State<UserState>
 
@@ -61,14 +61,18 @@ class ArtistaCrudService: ICrudService<Artista> {
     override suspend fun getAll(): List<Artista>{
         val artistas = mutableListOf<Artista>()
         try {
+            stateService.setLoading()
             val response = SupabaseClient.client.postgrest["Artistas"].select()
             val artistasJsonArray = response.body?.jsonArray
             artistasJsonArray?.forEach { jsonElement ->
                 val artista = Json.decodeFromJsonElement<Artista>(jsonElement)
                 artistas.add(artista)
             }
+            _artistaState.value=artistas
+            stateService.setSuccess("Artistas carregados com sucesso")
         } catch (e: Exception) {
             println(e.message)
+            stateService.setError("Erro: ${e.message}")
         }
         return artistas
     }
