@@ -41,7 +41,7 @@ class ArtistaCrudService(private val stateService: StateService): ICrudService<A
     }
 
     override suspend fun insert(item: Artista):Boolean{
-        var status: Boolean=false
+        var status =false
             try {
                 _userState.value= UserState.Loading
                 SupabaseClient.client.postgrest["Artistas"].insert(

@@ -19,20 +19,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.crud_teste.services.AuthService
 import com.example.crud_teste.data.model.Artista
+import com.example.crud_teste.services.ArtistaCrudService
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CadastrarArtistaScreen(navController: NavController) {
+fun CadastrarArtistaScreen(navController: NavController, artistaCrudService: ArtistaCrudService) {
     var Nome by remember { mutableStateOf("") }
     var Data by remember { mutableStateOf("") }
     var Biografia by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -85,6 +89,15 @@ fun CadastrarArtistaScreen(navController: NavController) {
                         Data= Data,
                         Biografia = Biografia
                     )
+                    try {
+                        coroutineScope.launch {
+                            artistaCrudService.insert(novoArtista)
+                        }
+                        //viewModel.getArtistas()
+                    } catch (e: Exception) {
+                        // Trate o erro conforme necessário
+                        // Aqui você pode definir um estado de erro ou lidar com o erro de outra forma
+                    }
                     //viewModel.saveArtista(novoArtista)
                 },
                 modifier = Modifier

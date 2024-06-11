@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     composable("artistas") { ArtistasScreen(navController,artistaCrudService ) }
                     composable("exposicao") { ExposicaoScreen(navController) }
                     composable("administrador") { AdministradorScreen(navController) }
-                    composable("cadastrarArtista") { CadastrarArtistaScreen(navController) }
+                    composable("cadastrarArtista") { CadastrarArtistaScreen(navController,artistaCrudService) }
                     composable("acessibilidade") { AcessibilidadeScreen(navController) }
                     composable("atualizarArtista") { AtualizarArtistaScreen(navController) }
                     composable("atualizarObra") { AtualizarObraScreen(navController) }
