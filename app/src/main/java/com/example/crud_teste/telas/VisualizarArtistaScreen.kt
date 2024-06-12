@@ -142,6 +142,7 @@ fun VisualizarArtistaScreen(navController: NavController, artistaCrudService: Ar
                                 var artistaId=artista.id
                                 if (artistaId != null) {
                                     artistaCrudService.delete(artistaId)
+                                    artistas = artistaCrudService.getAll();
                                 }
                             } },
                             modifier = Modifier

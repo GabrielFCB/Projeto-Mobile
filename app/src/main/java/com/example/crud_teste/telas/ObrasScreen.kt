@@ -117,7 +117,7 @@ fun ObrasScreen(navController: NavController, obraCrudService: ObraCrudService) 
                         GlobalText(text = "Nome: ${obra.nome}")
                         GlobalText(text = "Autor: ${obra.autor}")
                         GlobalText(text = "Data: ${obra.data}")
-                        GlobalText(text = "Biografia: ${obra.descricao}")
+                        GlobalText(text = "Descrição: ${obra.descricao}")
                         GlideImage(
                             url = obra.link,
                             modifier = Modifier.fillMaxWidth().padding(16.dp)

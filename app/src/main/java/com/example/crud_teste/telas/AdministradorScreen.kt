@@ -120,7 +120,7 @@ fun AdministradorScreen(navController: NavController) {
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
-                    onClick = { Navigator.navigateToAtualizarObra(navController) },
+                    onClick = { Navigator.navigateToVisualizarObra(navController) },
                     modifier = Modifier
                         .padding(vertical = 8.dp)
                         .fillMaxWidth()

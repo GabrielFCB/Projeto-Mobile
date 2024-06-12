@@ -103,7 +103,7 @@ fun AtualizarArtistaScreen(navController: NavController, artistaCrudService: Art
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
             ) {
-                Text("Cadastrar")
+                Text("Editar")
             }
         }
     }
