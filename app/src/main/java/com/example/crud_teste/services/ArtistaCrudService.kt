@@ -1,7 +1,9 @@
 package com.example.crud_teste.services
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.crud_teste.data.model.Artista
@@ -21,6 +23,7 @@ class ArtistaCrudService(private val stateService: StateService): ICrudService<A
 
     private val _artistaState = mutableStateOf<List<Artista>>(emptyList())
     val artistaState: State<List<Artista>> = _artistaState
+    var artistaId by mutableStateOf<Int>(0)
 
     init{
         userState=_userState
@@ -122,12 +125,41 @@ class ArtistaCrudService(private val stateService: StateService): ICrudService<A
         TODO("Not yet implemented")
     }
 
-    override suspend fun delete(item: Artista): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun delete(id: Int): Boolean {
+        var status =false
+        try {
+            _userState.value= UserState.Loading
+            SupabaseClient.client.postgrest["Artistas"].delete {
+                Artista::id eq id
+            }
+            status=true
+        } catch (e: Exception) {
+            _userState.value = UserState.Error("Error: ${e.message}")
+        }
+        return status
     }
 
-    override suspend fun update(item: Artista): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun update(item: Artista, id: Int): Boolean {
+        var status =false
+        try {
+            _userState.value= UserState.Loading
+            SupabaseClient.client.postgrest["Artistas"].update(
+                Artista(
+                    Nome = item.Nome,
+                    Data = item.Data,
+                    Biografia = item.Biografia
+                ),
+            ) {
+                Artista::id eq id
+            }
+            stateService.setSuccess("Artista atualizado com sucesso")
+            println("Artista atualizado com sucesso")
+            status=true
+        } catch (e: Exception) {
+            _userState.value = UserState.Error("Error: ${e.message}")
+            println("Error: ${e.message}")
+        }
+        return status
     }
 
 }

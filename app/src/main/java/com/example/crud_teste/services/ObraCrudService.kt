@@ -75,11 +75,11 @@ class ObraCrudService(private val stateService: StateService): ICrudService<Obra
         TODO("Not yet implemented")
     }
 
-    override suspend fun delete(item: Obra): Boolean {
+    override suspend fun delete(id: Int): Boolean {
         TODO("Not yet implemented")
     }
 
-    override suspend fun update(item: Obra): Boolean {
+    override suspend fun update(item: Obra,id:Int): Boolean {
         TODO("Not yet implemented")
     }
 
