@@ -1,6 +1,7 @@
 package com.example.crud_teste.telas
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +30,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.crud_teste.Navigator
+import com.example.crud_teste.Navigator.navigateToExposicao
 import com.example.crud_teste.components.GlideImage
 import com.example.crud_teste.components.GlobalText
 import com.example.crud_teste.components.GlobalTextColor
@@ -86,15 +89,15 @@ fun HomeScreen(navController: NavController) {
                     items(itemsList.size) { index ->
                         // Exibe a imagem
                         GlideImage(
-                            url = "https://www.unifor.br/documents/20143/0/feriado1.jpg/dac8c052-f370-6e28-a19c-8a762e0ceb43?t=1655297117230",
-                            modifier = Modifier.fillMaxWidth().padding(16.dp)
+                            url = "https://www.unifor.br/documents/20143/0/Centelhas+em+Movimento_800.jpg/f8a3f4c4-5932-354a-73b9-9664d0370943?t=1709584944422",
+                            modifier = Modifier.fillMaxWidth().padding(16.dp).clickable(onClick = { navigateToExposicao(navController) }),
                         )
                         // Exibe a descrição abaixo da imagem
                         GlobalText(
-                            text = "Seja bem vindo ao centro cultural da Unifor!",
+                            text = "Centelhas em movimento",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(16.dp)
                         )
                     }
                 }
