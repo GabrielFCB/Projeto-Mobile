@@ -29,6 +29,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.crud_teste.components.GlideImage
+import com.example.crud_teste.components.GlobalText
 import com.example.crud_teste.components.GlobalTextColor
 import com.example.crud_teste.components.SideBar
 import kotlinx.coroutines.launch
@@ -41,7 +43,7 @@ fun HomeScreen(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
 
     // Dados placeholder para simular a lista
-    val itemsList = List(5) { "Item ${it + 1}" }  // Isto pode ser substituído por uma chamada de API ou dados vindos de um banco de dados
+    val itemsList = List(1) { "Item ${it + 1}" }  // Isto pode ser substituído por uma chamada de API ou dados vindos de um banco de dados
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -82,7 +84,18 @@ fun HomeScreen(navController: NavController) {
             Column(modifier = Modifier.padding(paddingValues)) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(itemsList.size) { index ->
-
+                        // Exibe a imagem
+                        GlideImage(
+                            url = "https://www.unifor.br/documents/20143/0/feriado1.jpg/dac8c052-f370-6e28-a19c-8a762e0ceb43?t=1655297117230",
+                            modifier = Modifier.fillMaxWidth().padding(16.dp)
+                        )
+                        // Exibe a descrição abaixo da imagem
+                        GlobalText(
+                            text = "Seja bem vindo ao centro cultural da Unifor!",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                        )
                     }
                 }
             }
