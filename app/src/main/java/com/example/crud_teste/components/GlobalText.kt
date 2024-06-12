@@ -16,6 +16,5 @@ fun GlobalText(text: String, modifier: Modifier = Modifier ) {
         text = text,
         fontSize = AcessibilidadeSettings.fontSize.value.sp, // aplica o tamanho da fonte global
         color = AcessibilidadeSettings.fontColor.value, // aplica a cor da fonte global
-        textAlign = TextAlign.Center,
     )
 }

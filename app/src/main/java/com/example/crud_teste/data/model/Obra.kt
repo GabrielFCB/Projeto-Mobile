@@ -11,5 +11,6 @@ data class Obra(
     val autor:String = "",
     val nome: String = "",
     val data: String = "",
-    val descricao: String = ""
+    val descricao: String = "",
+    val link:String=""
 )

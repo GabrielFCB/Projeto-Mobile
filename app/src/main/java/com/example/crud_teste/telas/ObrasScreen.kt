@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.crud_teste.components.GlideImage
 import com.example.crud_teste.components.GlobalText
 import com.example.crud_teste.components.GlobalTextColor
 import com.example.crud_teste.components.SideBar
@@ -117,6 +118,10 @@ fun ObrasScreen(navController: NavController, obraCrudService: ObraCrudService) 
                         GlobalText(text = "Autor: ${obra.autor}")
                         GlobalText(text = "Data: ${obra.data}")
                         GlobalText(text = "Biografia: ${obra.descricao}")
+                        GlideImage(
+                            url = obra.link,
+                            modifier = Modifier.fillMaxWidth().padding(16.dp)
+                        )
                     }
                 }
             }

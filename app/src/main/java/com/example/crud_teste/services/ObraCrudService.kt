@@ -38,7 +38,8 @@ class ObraCrudService(private val stateService: StateService): ICrudService<Obra
                     nome = item.nome,
                     data = item.data,
                     autor=item.autor,
-                    descricao = item.descricao
+                    descricao = item.descricao,
+                    link=item.link
                 ),
             )
             status=true
@@ -61,9 +62,11 @@ class ObraCrudService(private val stateService: StateService): ICrudService<Obra
             }
             _obraState.value=obras
             stateService.setSuccess("Obras carregadas com sucesso")
+            println("Obras carregadas com sucesso")
         } catch (e: Exception) {
             println(e.message)
             stateService.setError("Erro: ${e.message}")
+            println(e.message)
         }
         return obras
     }

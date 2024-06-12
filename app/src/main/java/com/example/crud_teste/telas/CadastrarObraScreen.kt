@@ -44,6 +44,7 @@ fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudS
     var Autor by remember { mutableStateOf("") }
     var Data by remember { mutableStateOf("") }
     var Descricao by remember { mutableStateOf("") }
+    var Link  by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
 
@@ -93,6 +94,15 @@ fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudS
                     .padding(vertical = 8.dp)
                     .height(120.dp)
             )
+            OutlinedTextField(
+                value = Link,
+                onValueChange = { Link = it },
+                label = { GlobalText("Link com imagem") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .height(120.dp)
+            )
             Text(
                 text = errorMessage,
                 style = MaterialTheme.typography.bodyMedium,
@@ -105,7 +115,8 @@ fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudS
                         autor=Autor,
                         nome = Nome,
                         data= Data,
-                        descricao = Descricao
+                        descricao = Descricao,
+                        link=Link
                     )
                     try {
                         coroutineScope.launch {
