@@ -31,10 +31,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.crud_teste.components.GlobalText
+import com.example.crud_teste.components.GlobalTextColor
 import com.example.crud_teste.components.SideBar
 import com.example.crud_teste.services.AcessibilidadeSettings
 import kotlinx.coroutines.launch
@@ -46,6 +46,7 @@ fun AcessibilidadeScreen(navController: NavController) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
     var isAlternativeColor by remember { mutableStateOf(false) }
+    var isAlternativeFont by remember { mutableStateOf(false) }
 
 
     ModalNavigationDrawer(
@@ -58,11 +59,12 @@ fun AcessibilidadeScreen(navController: NavController) {
             topBar = {
                 TopAppBar(
                     title = {
-                        GlobalText(
+                        GlobalTextColor(
                             text = "Centro Cultural",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.LightGray),
+                            style = MaterialTheme.typography.titleLarge
                         )
                     },
                     navigationIcon = {
@@ -90,11 +92,18 @@ fun AcessibilidadeScreen(navController: NavController) {
             ) {
                 // Botão de Toggle para aumentar o tamanho da fonte
                 Switch(
-                    checked = false,
-                    onCheckedChange = { /* Não faz nada por enquanto */ },
+                    checked = isAlternativeFont,
+                    onCheckedChange = {
+                        isAlternativeFont = it
+                        if (isAlternativeFont) {
+                            AcessibilidadeSettings.setFonteAlternativa()
+                        } else {
+                            AcessibilidadeSettings.setFontePadrao()
+                        }
+                    },
                     modifier = Modifier.padding(8.dp)
                 )
-                Text("Aumentar Tamanho da Fonte")
+                GlobalText("Aumentar Tamanho da Fonte")
 
                 Switch(
                     checked = isAlternativeColor,
@@ -108,7 +117,7 @@ fun AcessibilidadeScreen(navController: NavController) {
                     },
                     modifier = Modifier.padding(8.dp)
                 )
-                Text("Modo Daltonismo")
+                GlobalText("Modo Daltonismo")
             }
         }
     }

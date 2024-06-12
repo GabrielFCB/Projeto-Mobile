@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.crud_teste.components.SideBar
 import com.example.crud_teste.Navigator
+import com.example.crud_teste.components.GlobalText
+import com.example.crud_teste.components.GlobalTextColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,12 +55,11 @@ fun AdministradorScreen(navController: NavController) {
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(
+                        GlobalTextColor(
                             text = "Administrador",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.LightGray),
-                            textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleLarge
                         )
                     },
@@ -91,7 +92,7 @@ fun AdministradorScreen(navController: NavController) {
                         .background(MaterialTheme.colorScheme.primary),
                     contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text("Cadastrar Artista", color = Color.White)
+                    GlobalText("Cadastrar Artista")
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
@@ -104,7 +105,7 @@ fun AdministradorScreen(navController: NavController) {
                         .background(MaterialTheme.colorScheme.primary),
                     contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text("Atualizar Artista", color = Color.White)
+                    GlobalText("Atualizar Artista")
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
@@ -117,7 +118,7 @@ fun AdministradorScreen(navController: NavController) {
                         .background(MaterialTheme.colorScheme.primary),
                     contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text("Cadastrar Obra", color = Color.White)
+                    GlobalText("Cadastrar Obra")
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
@@ -130,7 +131,7 @@ fun AdministradorScreen(navController: NavController) {
                         .background(MaterialTheme.colorScheme.primary),
                     contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text("Atualizar Obra", color = Color.White)
+                    GlobalText("Atualizar Obra")
                 }
             }
         }

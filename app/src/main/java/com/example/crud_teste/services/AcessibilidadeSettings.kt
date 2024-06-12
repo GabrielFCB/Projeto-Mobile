@@ -14,7 +14,7 @@ object AcessibilidadeSettings {
     }
 
     fun setCorAlternativa(){
-        fontColor.value=Color.Blue
+        fontColor.value=Color.Magenta
     }
 
     fun setFontePadrao() {

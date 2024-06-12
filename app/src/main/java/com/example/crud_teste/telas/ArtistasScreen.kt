@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.crud_teste.components.ArtistaList
 import com.example.crud_teste.components.GenericListView
+import com.example.crud_teste.components.GlobalText
+import com.example.crud_teste.components.GlobalTextColor
 import com.example.crud_teste.components.SideBar
 import com.example.crud_teste.data.model.Artista
 import com.example.crud_teste.interfaces.ICrudService
@@ -71,12 +73,11 @@ fun ArtistasScreen(navController: NavController, artistaCrudService: ArtistaCrud
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(
+                        GlobalTextColor(
                             text = "Artistas",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.LightGray),
-                            textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleLarge
                         )
                     },
@@ -114,9 +115,9 @@ fun ArtistasScreen(navController: NavController, artistaCrudService: ArtistaCrud
                             .padding(vertical = 4.dp, horizontal = 8.dp),
                         horizontalAlignment = Alignment.Start
                     ) {
-                        Text(text = "Nome: ${artista.Nome}")
-                        Text(text = "Data: ${artista.Data}")
-                        Text(text = "Biografia: ${artista.Biografia}")
+                        GlobalText(text = "Nome: ${artista.Nome}")
+                        GlobalText(text = "Data: ${artista.Data}")
+                        GlobalText(text = "Biografia: ${artista.Biografia}")
                     }
                 }
             }

@@ -31,6 +31,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.crud_teste.components.GlobalText
+import com.example.crud_teste.components.GlobalTextColor
 import com.example.crud_teste.components.SideBar
 import com.example.crud_teste.data.model.Artista
 import com.example.crud_teste.data.model.Obra
@@ -69,12 +71,11 @@ fun ObrasScreen(navController: NavController, obraCrudService: ObraCrudService) 
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(
+                        GlobalTextColor(
                             text = "Obras",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.LightGray),
-                            textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleLarge
                         )
                     },
@@ -112,10 +113,10 @@ fun ObrasScreen(navController: NavController, obraCrudService: ObraCrudService) 
                             .padding(vertical = 4.dp, horizontal = 8.dp),
                         horizontalAlignment = Alignment.Start
                     ) {
-                        Text(text = "Nome: ${obra.nome}")
-                        Text(text = "Autor: ${obra.autor}")
-                        Text(text = "Data: ${obra.data}")
-                        Text(text = "Biografia: ${obra.descricao}")
+                        GlobalText(text = "Nome: ${obra.nome}")
+                        GlobalText(text = "Autor: ${obra.autor}")
+                        GlobalText(text = "Data: ${obra.data}")
+                        GlobalText(text = "Biografia: ${obra.descricao}")
                     }
                 }
             }

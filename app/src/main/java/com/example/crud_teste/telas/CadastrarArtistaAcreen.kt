@@ -26,6 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.crud_teste.components.GlobalText
+import com.example.crud_teste.components.GlobalTextColor
 import com.example.crud_teste.services.AuthService
 import com.example.crud_teste.data.model.Artista
 import com.example.crud_teste.services.ArtistaCrudService
@@ -43,7 +45,7 @@ fun CadastrarArtistaScreen(navController: NavController, artistaCrudService: Art
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Cadastrar Artista") },
+                title = { GlobalTextColor("Cadastrar Artista",style = MaterialTheme.typography.titleLarge) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Go Back")
@@ -56,7 +58,7 @@ fun CadastrarArtistaScreen(navController: NavController, artistaCrudService: Art
             OutlinedTextField(
                 value = Nome,
                 onValueChange = { Nome = it },
-                label = { Text("Nome do Artista") },
+                label = { GlobalText("Nome do Artista") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -64,7 +66,7 @@ fun CadastrarArtistaScreen(navController: NavController, artistaCrudService: Art
             OutlinedTextField(
                 value = Data,
                 onValueChange = { Data = it },
-                label = { Text("Data de Nascimento") },
+                label = { GlobalText("Data de Nascimento") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -72,7 +74,7 @@ fun CadastrarArtistaScreen(navController: NavController, artistaCrudService: Art
             OutlinedTextField(
                 value = Biografia,
                 onValueChange = { Biografia = it },
-                label = { Text("Biografia") },
+                label = { GlobalText("Biografia") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -106,7 +108,7 @@ fun CadastrarArtistaScreen(navController: NavController, artistaCrudService: Art
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
             ) {
-                Text("Cadastrar")
+                GlobalText("Cadastrar")
             }
         }
     }

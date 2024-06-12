@@ -28,6 +28,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.crud_teste.components.GlobalText
+import com.example.crud_teste.components.GlobalTextColor
 //import com.example.crud_teste.SupabaseAuthViewModel
 import com.example.crud_teste.data.model.Artista
 import com.example.crud_teste.data.model.Obra
@@ -48,7 +50,7 @@ fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudS
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Cadastrar Obra") },
+                title = { GlobalTextColor("Cadastrar Obra",style = MaterialTheme.typography.titleLarge) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Go Back")
@@ -61,7 +63,7 @@ fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudS
             OutlinedTextField(
                 value = Nome,
                 onValueChange = { Nome = it },
-                label = { Text("Nome da Obra") },
+                label = { GlobalText("Nome da Obra") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -69,7 +71,7 @@ fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudS
             OutlinedTextField(
                 value = Autor,
                 onValueChange = { Autor = it },
-                label = { Text("Autor da Obra") },
+                label = { GlobalText("Autor da Obra") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -77,7 +79,7 @@ fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudS
             OutlinedTextField(
                 value = Data,
                 onValueChange = { Data = it },
-                label = { Text("Data de Nascimento") },
+                label = { GlobalText("Data de Nascimento") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -85,7 +87,7 @@ fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudS
             OutlinedTextField(
                 value = Descricao,
                 onValueChange = { Descricao = it },
-                label = { Text("Sobre a Obra") },
+                label = { GlobalText("Sobre a Obra") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -119,7 +121,7 @@ fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudS
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
             ) {
-                Text("Cadastrar")
+                GlobalText("Cadastrar")
             }
         }
     }
