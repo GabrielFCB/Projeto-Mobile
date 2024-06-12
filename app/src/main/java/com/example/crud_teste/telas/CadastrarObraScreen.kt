@@ -80,7 +80,7 @@ fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudS
             OutlinedTextField(
                 value = Data,
                 onValueChange = { Data = it },
-                label = { GlobalText("Data de Nascimento") },
+                label = { GlobalText("Data de Criação") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
