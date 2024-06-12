@@ -22,7 +22,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +34,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.crud_teste.components.GlobalText
 import com.example.crud_teste.components.SideBar
+import com.example.crud_teste.services.AcessibilidadeSettings
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,6 +45,7 @@ fun AcessibilidadeScreen(navController: NavController) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
+    var isAlternativeColor by remember { mutableStateOf(false) }
 
 
     ModalNavigationDrawer(
@@ -51,13 +58,11 @@ fun AcessibilidadeScreen(navController: NavController) {
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(
+                        GlobalText(
                             text = "Centro Cultural",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.LightGray),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleLarge
                         )
                     },
                     navigationIcon = {
@@ -91,10 +96,16 @@ fun AcessibilidadeScreen(navController: NavController) {
                 )
                 Text("Aumentar Tamanho da Fonte")
 
-                // Botão de Toggle para o modo daltonismo
                 Switch(
-                    checked = false,
-                    onCheckedChange = { /* Não faz nada por enquanto */ },
+                    checked = isAlternativeColor,
+                    onCheckedChange = {
+                        isAlternativeColor = it
+                        if (isAlternativeColor) {
+                            AcessibilidadeSettings.setCorAlternativa()
+                        } else {
+                            AcessibilidadeSettings.setCorPadrao()
+                        }
+                    },
                     modifier = Modifier.padding(8.dp)
                 )
                 Text("Modo Daltonismo")

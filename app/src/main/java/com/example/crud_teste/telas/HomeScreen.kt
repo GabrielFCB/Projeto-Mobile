@@ -58,7 +58,6 @@ fun HomeScreen(navController: NavController) {
                                 .fillMaxWidth()
                                 .background(Color.LightGray),
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleLarge
                         )
                     },
                     navigationIcon = {
