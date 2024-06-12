@@ -19,6 +19,7 @@ class AuthService(private val stateService: StateService) : IAuthService{
         userPassword:String,
     ): Boolean{
         var status: Boolean =false
+         stateService.setLoading()
         try {
             SupabaseClient.client.gotrue.signUpWith(Email){
                 email=userEmail
@@ -26,7 +27,33 @@ class AuthService(private val stateService: StateService) : IAuthService{
             }
             saveToken(context)
             status=true
+            stateService.setSuccess("Signed in successfully")
+            println("Signed in successfully")
         } catch (e:Exception){
+            stateService.setError("Error: ${e.message}")
+            println("Error: ${e.message}")
+        }
+        return status
+    }
+
+    override suspend fun login(
+        context: Context,
+        userEmail: String,
+        userPassword: String,
+    ) : Boolean{
+        var status:Boolean=false
+        stateService.setLoading()
+        try {
+            SupabaseClient.client.gotrue.loginWith(Email){
+                email=userEmail
+                password=userPassword
+            }
+            saveToken(context)
+            status=true
+            stateService.setSuccess("Logged in successfully")
+        } catch (e:Exception){
+            stateService.setError("Error: ${e.message}")
+            println("Error: ${e.message}")
         }
         return status
     }
@@ -42,26 +69,6 @@ class AuthService(private val stateService: StateService) : IAuthService{
         return sharedPref.getStringData("accessToken")
     }
 
-    override suspend fun login(
-        context: Context,
-        userEmail: String,
-        userPassword: String,
-    ) : Boolean{
-        var status:Boolean=false
-        stateService.setLoading()
-        try {
-                SupabaseClient.client.gotrue.loginWith(Email){
-                    email=userEmail
-                    password=userPassword
-                }
-                saveToken(context)
-                status=true
-            stateService.setSuccess("Logged in successfully")
-            } catch (e:Exception){
-            stateService.setError("Error: ${e.message}")
-            }
-        return status
-    }
 
     override suspend fun logout(context: Context){
         val sharedPref= SharedPreferenceHelper(context)

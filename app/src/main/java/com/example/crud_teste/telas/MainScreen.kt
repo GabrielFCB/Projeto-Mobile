@@ -64,12 +64,24 @@ fun MainScreen(navController: NavController,authService: AuthService) {
             placeholder = { Text("Enter password") }
         )
         Spacer(modifier = Modifier.height(8.dp))
-//        Button(onClick = { viewModel.signUp(context, userEmail, userPassword) }) {
-//            Text("Sign Up")
-//        }
+        Button(onClick = { coroutineScope.launch {
+            try{
+
+                authService.signUp(context, userEmail, userPassword)
+            } catch (e: Exception){
+                println(e.message)
+            }
+        } }) {
+            Text("Sign Up")
+        }
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { coroutineScope.launch { if (authService.login(context, userEmail, userPassword))
-            navController.navigate("home")
+        Button(onClick = { coroutineScope.launch {
+            try {
+                if (authService.login(context, userEmail, userPassword))
+                    navController.navigate("home")
+            }catch (e: Exception){
+                println(e.message)
+            }
         }}) {
             Text("Login")
         }
