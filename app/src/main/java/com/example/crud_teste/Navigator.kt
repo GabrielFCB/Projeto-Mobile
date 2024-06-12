@@ -33,6 +33,10 @@ object Navigator {
         navController.navigate("cadastrarArtista")
     }
 
+    fun navigateToCadastrarObra(navController: NavController) {
+        navController.navigate("cadastrarObra")
+    }
+
     fun navigateToAcessibilidade(navController: NavController) {
         navController.navigate("acessibilidade")
     }

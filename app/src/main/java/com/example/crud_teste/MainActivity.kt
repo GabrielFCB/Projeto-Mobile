@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.crud_teste.services.ArtistaCrudService
 import com.example.crud_teste.services.AuthService
+import com.example.crud_teste.services.ObraCrudService
 import com.example.crud_teste.services.StateService
 import com.example.crud_teste.telas.AcessibilidadeScreen
 import com.example.crud_teste.telas.AdministradorScreen
@@ -15,6 +16,7 @@ import com.example.crud_teste.telas.ArtistasScreen
 import com.example.crud_teste.telas.AtualizarArtistaScreen
 import com.example.crud_teste.telas.AtualizarObraScreen
 import com.example.crud_teste.telas.CadastrarArtistaScreen
+import com.example.crud_teste.telas.CadastrarObraScreen
 import com.example.crud_teste.telas.ExposicaoScreen
 import com.example.crud_teste.telas.HomeScreen
 import com.example.crud_teste.telas.MainScreen
@@ -33,15 +35,17 @@ class MainActivity : ComponentActivity() {
                 val stateService: StateService=StateService()
                 val authService:AuthService=AuthService(stateService);
                 val artistaCrudService:ArtistaCrudService= ArtistaCrudService(stateService);
+                val obraCrudService:ObraCrudService= ObraCrudService(stateService);
 
                 NavHost(navController = navController, startDestination = "login") {
                     composable("login") { MainScreen(navController,authService) }
                     composable("home") { HomeScreen(navController) }
-                    composable("obras") { ObrasScreen(navController) }
+                    composable("obras") { ObrasScreen(navController, obraCrudService) }
                     composable("artistas") { ArtistasScreen(navController,artistaCrudService ) }
                     composable("exposicao") { ExposicaoScreen(navController) }
                     composable("administrador") { AdministradorScreen(navController) }
                     composable("cadastrarArtista") { CadastrarArtistaScreen(navController,artistaCrudService) }
+                    composable("cadastrarObra") { CadastrarObraScreen(navController,obraCrudService) }
                     composable("acessibilidade") { AcessibilidadeScreen(navController) }
                     composable("atualizarArtista") { AtualizarArtistaScreen(navController) }
                     composable("atualizarObra") { AtualizarObraScreen(navController) }

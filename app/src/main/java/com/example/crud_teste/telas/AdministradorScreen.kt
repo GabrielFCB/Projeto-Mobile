@@ -108,7 +108,7 @@ fun AdministradorScreen(navController: NavController) {
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { Navigator.navigateToCadastrarObra(navController) },
                     modifier = Modifier
                         .padding(vertical = 8.dp)
                         .fillMaxWidth()

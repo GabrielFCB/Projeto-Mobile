@@ -1,6 +1,7 @@
 package com.example.crud_teste.telas
 
-import android.content.ContentValues.TAG
+
+import android.content.ContentValues
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,24 +28,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.crud_teste.services.AuthService
+//import com.example.crud_teste.SupabaseAuthViewModel
 import com.example.crud_teste.data.model.Artista
-import com.example.crud_teste.services.ArtistaCrudService
+import com.example.crud_teste.data.model.Obra
+import com.example.crud_teste.services.ObraCrudService
+import io.ktor.websocket.Frame
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CadastrarArtistaScreen(navController: NavController, artistaCrudService: ArtistaCrudService) {
+fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudService) {
     var Nome by remember { mutableStateOf("") }
+    var Autor by remember { mutableStateOf("") }
     var Data by remember { mutableStateOf("") }
-    var Biografia by remember { mutableStateOf("") }
+    var Descricao by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Cadastrar Artista") },
+                title = { Text("Cadastrar Obra") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Go Back")
@@ -56,7 +61,15 @@ fun CadastrarArtistaScreen(navController: NavController, artistaCrudService: Art
             OutlinedTextField(
                 value = Nome,
                 onValueChange = { Nome = it },
-                label = { Text("Nome do Artista") },
+                label = { Text("Nome da Obra") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            )
+            OutlinedTextField(
+                value = Autor,
+                onValueChange = { Autor = it },
+                label = { Text("Autor da Obra") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -70,9 +83,9 @@ fun CadastrarArtistaScreen(navController: NavController, artistaCrudService: Art
                     .padding(vertical = 8.dp)
             )
             OutlinedTextField(
-                value = Biografia,
-                onValueChange = { Biografia = it },
-                label = { Text("Biografia") },
+                value = Descricao,
+                onValueChange = { Descricao = it },
+                label = { Text("Sobre a Obra") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -86,21 +99,21 @@ fun CadastrarArtistaScreen(navController: NavController, artistaCrudService: Art
             )
             Button(
                 onClick = {
-                    val novoArtista = Artista(
-                        Nome = Nome,
-                        Data= Data,
-                        Biografia = Biografia
+                    val novaObra = Obra(
+                        autor=Autor,
+                        nome = Nome,
+                        data= Data,
+                        descricao = Descricao
                     )
                     try {
                         coroutineScope.launch {
-                            artistaCrudService.insert(novoArtista)
+                            obraCrudService.insert(novaObra)
                         }
                         //viewModel.getArtistas()
                     } catch (e: Exception) {
                         // Trate o erro conforme necessário
                         // Aqui você pode definir um estado de erro ou lidar com o erro de outra forma
                     }
-                    //viewModel.saveArtista(novoArtista)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
