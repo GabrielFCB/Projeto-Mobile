@@ -22,44 +22,61 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.crud_teste.DrawerContent
-import com.example.crud_teste.ListItem
-import com.example.crud_teste.SupabaseAuthViewModel
+import com.example.crud_teste.components.GlideImage
+import com.example.crud_teste.components.GlobalText
+import com.example.crud_teste.components.GlobalTextColor
+import com.example.crud_teste.components.SideBar
+import com.example.crud_teste.data.model.Artista
+import com.example.crud_teste.data.model.Obra
+import com.example.crud_teste.services.ArtistaCrudService
+import com.example.crud_teste.services.ObraCrudService
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ObrasScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun ObrasScreen(navController: NavController, obraCrudService: ObraCrudService) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
+    val coroutineScope = rememberCoroutineScope()
+    var obras : List<Obra> = listOf<Obra>()
 
-    // Dados placeholder para simular a lista
-    val itemsList = List(5) { "Item ${it + 1}" }  // Isto pode ser substituído por uma chamada de API ou dados vindos de um banco de dados
+    // Chamada apropriada para obter artistas quando a tela é acessada
+    LaunchedEffect(Unit) {
+        try {
+            coroutineScope.launch {
+                obras = obraCrudService.getAll();
+            }
+            //viewModel.getArtistas()
+        } catch (e: Exception) {
+            // Trate o erro conforme necessário
+            // Aqui você pode definir um estado de erro ou lidar com o erro de outra forma
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(drawerState, viewModel, context, navController)  // Passa viewModel, context e navController para o Drawer
+            SideBar(drawerState, context, navController)
         }
     ) {
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(
+                        GlobalTextColor(
                             text = "Obras",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.LightGray),
-                            textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleLarge
                         )
                     },
@@ -81,13 +98,34 @@ fun ObrasScreen(navController: NavController, viewModel: SupabaseAuthViewModel =
                 )
             }
         ) { paddingValues ->
-            Column(modifier = Modifier.padding(paddingValues)) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(itemsList.size) { index ->
-                        ListItem(item = itemsList[index])
+            val obrasState = obraCrudService.obraState.value
+            // Verifica se a lista de artistas não está vazia antes de exibi-la
+
+            LazyColumn(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+            ) {
+                items(obrasState.size) { index ->
+                    val obra = obrasState[index]
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp, horizontal = 8.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        GlobalText(text = "Nome: ${obra.nome}")
+                        GlobalText(text = "Autor: ${obra.autor}")
+                        GlobalText(text = "Data: ${obra.data}")
+                        GlobalText(text = "Descrição: ${obra.descricao}")
+                        GlideImage(
+                            url = obra.link,
+                            modifier = Modifier.fillMaxWidth().padding(16.dp)
+                        )
                     }
                 }
             }
+
         }
     }
 }

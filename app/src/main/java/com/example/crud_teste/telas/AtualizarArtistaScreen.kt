@@ -16,30 +16,32 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.crud_teste.SupabaseAuthViewModel
+import com.example.crud_teste.services.AuthService
 import com.example.crud_teste.data.model.Artista
-import io.ktor.websocket.Frame
+import com.example.crud_teste.services.ArtistaCrudService
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AtualizarArtistaScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun AtualizarArtistaScreen(navController: NavController, artistaCrudService: ArtistaCrudService) {
     var Nome by remember { mutableStateOf("") }
     var Data by remember { mutableStateOf("") }
     var Biografia by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Cadastrar Artista") },
+                title = { Text("Atualizar Artista") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Go Back")
@@ -87,13 +89,21 @@ fun AtualizarArtistaScreen(navController: NavController, viewModel: SupabaseAuth
                         Data= Data,
                         Biografia = Biografia
                     )
-                    viewModel.saveArtista(novoArtista)
+                    try {
+                        coroutineScope.launch {
+                            artistaCrudService.update(novoArtista,artistaCrudService.artistaId)
+                        }
+                        //viewModel.getArtistas()
+                    } catch (e: Exception) {
+                        // Trate o erro conforme necessário
+                        // Aqui você pode definir um estado de erro ou lidar com o erro de outra forma
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
             ) {
-                Text("Cadastrar")
+                Text("Editar")
             }
         }
     }

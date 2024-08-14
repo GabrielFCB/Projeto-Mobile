@@ -1,5 +1,8 @@
 package com.example.crud_teste.telas
 
+
+import android.content.ContentValues
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,15 +30,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.crud_teste.components.GlobalText
 import com.example.crud_teste.components.GlobalTextColor
-import com.example.crud_teste.services.AuthService
+//import com.example.crud_teste.SupabaseAuthViewModel
 import com.example.crud_teste.data.model.Artista
 import com.example.crud_teste.data.model.Obra
 import com.example.crud_teste.services.ObraCrudService
+import io.ktor.websocket.Frame
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AtualizarObraScreen(navController: NavController, obraCrudService: ObraCrudService) {
+fun CadastrarObraScreen(navController: NavController, obraCrudService: ObraCrudService) {
     var Nome by remember { mutableStateOf("") }
     var Autor by remember { mutableStateOf("") }
     var Data by remember { mutableStateOf("") }
@@ -46,7 +51,7 @@ fun AtualizarObraScreen(navController: NavController, obraCrudService: ObraCrudS
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { GlobalTextColor("Editar Obra",style = MaterialTheme.typography.titleLarge) },
+                title = { GlobalTextColor("Cadastrar Obra",style = MaterialTheme.typography.titleLarge) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Go Back")
@@ -115,7 +120,7 @@ fun AtualizarObraScreen(navController: NavController, obraCrudService: ObraCrudS
                     )
                     try {
                         coroutineScope.launch {
-                            obraCrudService.update(novaObra,obraCrudService.obraId)
+                            obraCrudService.insert(novaObra)
                         }
                         //viewModel.getArtistas()
                     } catch (e: Exception) {
@@ -127,7 +132,7 @@ fun AtualizarObraScreen(navController: NavController, obraCrudService: ObraCrudS
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
             ) {
-                GlobalText("Editar")
+                GlobalText("Cadastrar")
             }
         }
     }

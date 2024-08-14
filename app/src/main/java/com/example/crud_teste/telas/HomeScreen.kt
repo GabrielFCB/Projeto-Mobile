@@ -1,6 +1,7 @@
 package com.example.crud_teste.telas
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,37 +30,39 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.crud_teste.DrawerContent
-import com.example.crud_teste.ListItem
-import com.example.crud_teste.SupabaseAuthViewModel
+import com.example.crud_teste.Navigator
+import com.example.crud_teste.Navigator.navigateToExposicao
+import com.example.crud_teste.components.GlideImage
+import com.example.crud_teste.components.GlobalText
+import com.example.crud_teste.components.GlobalTextColor
+import com.example.crud_teste.components.SideBar
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()  // Obtém o CoroutineScope para o Composable
 
     // Dados placeholder para simular a lista
-    val itemsList = List(5) { "Item ${it + 1}" }  // Isto pode ser substituído por uma chamada de API ou dados vindos de um banco de dados
+    val itemsList = List(1) { "Item ${it + 1}" }  // Isto pode ser substituído por uma chamada de API ou dados vindos de um banco de dados
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(drawerState, viewModel, context, navController)  // Passa viewModel, context e navController para o Drawer
+            SideBar(drawerState, context, navController)  // Passa viewModel, context e navController para o Drawer
         }
     ) {
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(
+                        GlobalTextColor(
                             text = "Centro Cultural",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.LightGray),
-                            textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleLarge
                         )
                     },
@@ -84,7 +87,18 @@ fun HomeScreen(navController: NavController, viewModel: SupabaseAuthViewModel = 
             Column(modifier = Modifier.padding(paddingValues)) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(itemsList.size) { index ->
-                        ListItem(item = itemsList[index])
+                        // Exibe a imagem
+                        GlideImage(
+                            url = "https://www.unifor.br/documents/20143/0/Centelhas+em+Movimento_800.jpg/f8a3f4c4-5932-354a-73b9-9664d0370943?t=1709584944422",
+                            modifier = Modifier.fillMaxWidth().padding(16.dp).clickable(onClick = { navigateToExposicao(navController) }),
+                        )
+                        // Exibe a descrição abaixo da imagem
+                        GlobalText(
+                            text = "Centelhas em movimento",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        )
                     }
                 }
             }

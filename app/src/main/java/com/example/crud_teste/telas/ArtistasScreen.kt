@@ -1,9 +1,7 @@
 package com.example.crud_teste.telas
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,38 +23,40 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.crud_teste.DrawerContent
-import com.example.crud_teste.ListItem
-import com.example.crud_teste.SupabaseAuthViewModel
+import com.example.crud_teste.components.ArtistaList
+import com.example.crud_teste.components.GenericListView
+import com.example.crud_teste.components.GlobalText
+import com.example.crud_teste.components.GlobalTextColor
+import com.example.crud_teste.components.SideBar
 import com.example.crud_teste.data.model.Artista
-import com.example.crud_teste.data.model.UserState
+import com.example.crud_teste.interfaces.ICrudService
+import com.example.crud_teste.services.ArtistaCrudService
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArtistasScreen(navController: NavController, viewModel: SupabaseAuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun ArtistasScreen(navController: NavController, artistaCrudService: ArtistaCrudService) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
+    var artistas : List<Artista> = listOf<Artista>()
 
     // Chamada apropriada para obter artistas quando a tela é acessada
     LaunchedEffect(Unit) {
         try {
-            viewModel.getArtistas()
+            coroutineScope.launch {
+                artistas = artistaCrudService.getAll();
+            }
+            //viewModel.getArtistas()
         } catch (e: Exception) {
             // Trate o erro conforme necessário
             // Aqui você pode definir um estado de erro ou lidar com o erro de outra forma
@@ -66,19 +66,18 @@ fun ArtistasScreen(navController: NavController, viewModel: SupabaseAuthViewMode
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(drawerState, viewModel, context, navController)
+            SideBar(drawerState, context, navController)
         }
     ) {
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(
+                        GlobalTextColor(
                             text = "Artistas",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.LightGray),
-                            textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleLarge
                         )
                     },
@@ -100,7 +99,7 @@ fun ArtistasScreen(navController: NavController, viewModel: SupabaseAuthViewMode
                 )
             }
         ) { paddingValues ->
-            val artistasState = viewModel.artistaState.value
+           val artistasState = artistaCrudService.artistaState.value
             // Verifica se a lista de artistas não está vazia antes de exibi-la
 
             LazyColumn(
@@ -116,13 +115,12 @@ fun ArtistasScreen(navController: NavController, viewModel: SupabaseAuthViewMode
                             .padding(vertical = 4.dp, horizontal = 8.dp),
                         horizontalAlignment = Alignment.Start
                     ) {
-                        Text(text = "Nome: ${artista.Nome}")
-                        Text(text = "Data: ${artista.Data}")
-                        Text(text = "Biografia: ${artista.Biografia}")
+                        GlobalText(text = "Nome: ${artista.Nome}")
+                        GlobalText(text = "Data: ${artista.Data}")
+                        GlobalText(text = "Biografia: ${artista.Biografia}")
                     }
                 }
             }
-
 
         }
     }
